@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Car, CarType, Review
 from django.urls import reverse_lazy
+from .forms import CarForm
 
 # Create your views here.
 def index(request):
@@ -13,3 +14,16 @@ def cars(request):
 def carDetail(request, id):
     car = get_object_or_404(Car, pk = id)
     return render(request, 'car/cardetail.html', {'car': car})
+
+def newCar(request):
+    form = CarForm
+
+    if request.method == 'POST':
+        form=CarForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit = True)
+            post.save()
+            form = CarForm()
+    else:
+        form = CarForm()
+    return render(request, 'car/newcar.html', {'form': form})

@@ -2,6 +2,7 @@ from django.test import TestCase
 from  django.contrib.auth.models import User
 from .models import CarType, Car, Review
 import datetime
+from .forms import CarForm
 
 # Create your tests here.
 class CarTypeTest(TestCase):
@@ -28,3 +29,17 @@ class CarTest(TestCase):
     def test_discount(self):
         disc = self.car.price * 0.05
         self.assertEqual(self.car.discountAmount(), disc)
+
+class NewCarForm(TestCase):
+    def test_carform(self):
+        data={
+            'carname':'Audi A7', 
+            'cartype':'Sports Car',
+            'user': 'kai',
+            'dateentered': '2021-1-1',
+            'price': '69200',
+            'producturl': 'http://audiusa.com/us/web/en/models/a7/a7-sportback/2022/overview.html' 
+        }
+        form = CarForm (data)
+        self.assertTrue(form.is_valid)
+
