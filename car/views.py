@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Car, CarType, Review
 from django.urls import reverse_lazy
 from .forms import CarForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -15,6 +16,7 @@ def carDetail(request, id):
     car = get_object_or_404(Car, pk = id)
     return render(request, 'car/cardetail.html', {'car': car})
 
+@login_required
 def newCar(request):
     form = CarForm
 
@@ -27,3 +29,9 @@ def newCar(request):
     else:
         form = CarForm()
     return render(request, 'car/newcar.html', {'form': form})
+
+def loginmessage(request):
+    return render(request, 'car/loginmessage.html')
+
+def logoutmessage(request):
+    return render(request, 'car/logoutmessage.html')
