@@ -21,6 +21,13 @@ class Car(models.Model):
     price = models.DecimalField(max_digits = 9, decimal_places = 2)
     producturl = models.URLField()
 
+    def discountAmount(self):
+        self.discount = self.price * 0.05
+        return self.discount
+
+    def discountPrice(self):
+        self.discountedPrice = self.price - self.discount
+
     def __str__(self):
         return self.carname
 
