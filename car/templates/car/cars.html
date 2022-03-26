@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Cars</h2>
+<ul>
+    {% for c in car_list %}
+        <li><a href="{% url 'detail' id=c.id %}">{{ c.carname }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %} 
