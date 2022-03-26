@@ -3,6 +3,7 @@ from  django.contrib.auth.models import User
 from .models import CarType, Car, Review
 import datetime
 from .forms import CarForm
+from django.urls import reverse_lazy, reverse
 
 # Create your tests here.
 class CarTypeTest(TestCase):
@@ -42,4 +43,16 @@ class NewCarForm(TestCase):
         }
         form = CarForm (data)
         self.assertTrue(form.is_valid)
+
+class New_Car_Authentication_Test(TestCase):
+    def setUp(self):
+        self.test_user = User.objects.create_user(username = 'testuser1', password='P@ssw0rd1')
+        self.type = CarType.objects.create(typename='SUV')
+        self.car = Car.objects.create(carname = 'BMW X5', cartype = self.type, user = self.test_user,
+                       dateentered = datetime.date(2022,1,1), price = 100000, 
+                       producturl = 'https://www.bmwusa.com/vehicles/m-models/m8-coupe/overview.html')
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse('newcar'))
+        self.assertRedirects(response, '/accounts/login/?next=/car/newcar/')
 
